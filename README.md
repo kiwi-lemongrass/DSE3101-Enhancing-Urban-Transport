@@ -1,5 +1,10 @@
 # Enhancing Urban Planning and Development through Public Transport Accessibility Analysis
-Bernice Ong Hwee Yee&nbspGao Yuchen      Luo Xinming      Tiffany Irene Prasetio
+
+Team Members
+- Bernice Ong Hwee Yee
+- Gao Yuchen
+- Luo Xinming
+- Tiffany Irene Prasetio
 
 ## 1. Project Description
 This project is a group project under course code DSE3101. Our aim is to identify and analyze commuter hubs and public transport accessibility in Singapore to support urban planning and development. By leveraging data from the LTA DataMall, we will assess the density and distribution of transport services in relation to population centers, providing valuable insights for city planners and developers. 
