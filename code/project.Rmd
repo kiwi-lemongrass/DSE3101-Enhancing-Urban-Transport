@@ -63,9 +63,26 @@ busArrival <- as_tibble(get_res_list(endpoint)$Services)
 busArrival
 ```
 
-### Passenger Volume by Bus Stop
+### Taxi Availability
 ```{r}
-endpoint <- "/ltaodataservice/PV/Bus"
-link = get_res_list(endpoint)$value$Link
-
+endpoint <- "/ltaodataservice/Taxi-Availability"
+taxiAvail <- get_res_list(endpoint)
+taxiAvail
 ```
+
+
+### Taxi Stands
+```{r}
+endpoint <- "/ltaodataservice/TaxiStands"
+taxiStands <- get_res_list(endpoint)
+taxiStands
+```
+
+### Estimated Travel Times
+Returns estimated travel times (in minutes) of expressways (in segments)
+```{r}
+endpoint <- "/ltaodataservice/EstTravelTimes"
+ETT <- get_res_list(endpoint)
+ETT
+```
+
