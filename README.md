@@ -32,7 +32,7 @@ An overview of the datasets that we plan to explore and analyze is as follows:
 
 
 ## 4. Main Objectives
-Analyze public transport availability and accessibility across different regions in Singapore and look for gaps in services provided currently with the aid of interactive visualization 
+1.Analyze public transport availability and accessibility across different regions in Singapore and look for gaps in services provided currently with the aid of interactive visualization //
 Identify factors that have significant weightage to improving connectivity eg. network density, service frequency, intermodal connectivity, travel time, reliability, etc 
 Identify commuter hubs and areas with high development potential based on transport connectivity.
 Provide recommendations for urban planning and development based on public transport accessibility.
