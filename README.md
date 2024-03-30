@@ -16,20 +16,7 @@ A city planner could use the data to identify areas with insufficient public tra
 Real estate developers might analyze the data to determine potential locations for residential and commercial projects that would benefit from the proximity to transportation hubs.
  
 ## 3. Data Source
-Our datasets will mainly come from LTA DataMall, which can be accessed via https://datamall.lta.gov.s g/content/datamall/en.html. The Land Transport Authority (LTA) spearheads land transport developments in Singapore, and we tap into their online data archive to obtain data on public transport from January 2022 to December 2023. 
-An overview of the datasets that we plan to explore and analyze is as follows: 
-| DATASET | DESCRIPTION |
-| --- | --- |
-| BUS ARRIVAL | Returns real-time Bus Arrival information of Bus Services at a queried Bus Stop, including Est. Arrival Time, Est. Current Location, Est. Current Load.|
-| BUS SERVICES | Returns detailed service information for all buses currently in operation, including: first stop, last stop, peak / offpeak frequency of dispatch. |
-| BUS ROUTES | Returns detailed route information for all services currently in operation, including: all bus stops along each route, first/last bus timings for each stop |
-| BUS STOPS | Returns detailed information for all bus stops currently being serviced by buses, including: Bus Stop Code, location coordinates. |
-| PASSENGER VOLUME BY BUS STOPS | Returns tap in and tap out passenger volume by weekdays and weekends for individual bus stop |
-| PASSENGER VOLUME BY ORIGIN DESTINATION BUS STOPS | Returns number of trips by weekdays and weekends from origin to destination bus stops. |
-| PASSENGER VOLUME BY ORIGIN DESTINATION TRAIN STATIONS | Returns number of trips by weekdays and weekends from origin to destination train stations |
-| PASSENGER VOLUME BY TRAIN STATIONS | Returns tap in and tap out passenger volume by weekdays and weekends for individual train stations. |
-| PLATFORM CROWD DENSITY REAL TIME | Returns real-time platform crowdedness level for the MRT/LRT stations of a particular train network line. |
-
+Our datasets will mainly come from LTA DataMall, which can be accessed via https://datamall.lta.gov.sg/content/datamall/en.html. The Land Transport Authority (LTA) spearheads land transport developments in Singapore, and we tap into their online data archive to obtain data on public transport from January 2022 to December 2023. 
 
 ## 4. Main Objectives
 1.Analyze public transport availability and accessibility across different regions in Singapore and look for gaps in services provided currently with the aid of interactive visualization \
@@ -52,3 +39,7 @@ Development of actionable recommendations for urban planning and development.
 - Milestone 1 (Week 8-9): Data collection and preprocessing: Gather and clean data from LTA DataMall and other relevant sources. Logistics related to project planning. Complete the main part of backend analysis. 
 - Milestone 2 (Week 10-11): Analysis and visualization: Analyze public transport data and create interactive visualizations to identify commuter hubs and areas with high development potential. Finalize the videos and submit them on Canvas. Prepare for the in-class presentation. Complete the main part of frontend analysis. 
 - Milestone 3 (Week 12-13): In-class presentation. Review and complete the final report. 
+
+## Links
+[Proposal](https://docs.google.com/document/d/1Rkk9R01Y3jouLnso1FWMFEfWWeDm70d52EWLyjCjkN0/edit)  
+[Project Journal](https://docs.google.com/document/d/1KGUR0AjU_-qRQ1V9_KZUK9jvvysmgQItazL7bBX8p4k/edit)
