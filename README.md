@@ -16,7 +16,7 @@ A city planner could use the data to identify areas with insufficient public tra
 Real estate developers might analyze the data to determine potential locations for residential and commercial projects that would benefit from the proximity to transportation hubs.
  
 ## 3. Data Source
-Our datasets will mainly come from LTA DataMall, which can be accessed via https://datamall.lta.gov.s g/content/datamall/en.html. The Land Transport Authority (LTA) spearheads land transport developments in Singapore, and we tap into their online data archive to obtain data on public transport from January 2022 to December 2023. 
+Our datasets will mainly come from LTA DataMall, which can be accessed via https://datamall.lta.gov.sg/content/datamall/en.html. The Land Transport Authority (LTA) spearheads land transport developments in Singapore, and we tap into their online data archive to obtain data on public transport from January 2022 to December 2023. 
 An overview of the datasets that we plan to explore and analyze is as follows: 
 | DATASET | DESCRIPTION |
 | --- | --- |
