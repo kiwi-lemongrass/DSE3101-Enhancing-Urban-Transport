@@ -25,12 +25,10 @@ ui <- fluidPage(
                  actionButton("seeAccessMap", "See the Map")
                ),
                mainPanel(
-                 leafletOutput("accessMap")
+                 leafletOutput("accessMap"),
+                 DTOutput("accessTable")  # Move the DT output for the accessibility table here
                )
              )
-    ),
-    tabPanel("Accessibility Table",
-             DTOutput("accessTable")  # Add a DT output for the accessibility table
     ),
     tabPanel("Availability",
              sidebarLayout(
@@ -42,15 +40,14 @@ ui <- fluidPage(
                  actionButton("seeAvailMap", "See the Map")
                ),
                mainPanel(
-                 leafletOutput("availMap")
+                 leafletOutput("availMap"),
+                 DTOutput("availTable")  # Move the output for the Availability DataTable here
                )
              )
-    ),
-    tabPanel("Availability Table View",
-             DTOutput("availTable")  # Output for the Availability DataTable
     )
   )
 )
+
 
 # Define server logic
 server <- function(input, output, session) {
