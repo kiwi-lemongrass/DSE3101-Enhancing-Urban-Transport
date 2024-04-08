@@ -6,9 +6,9 @@ library(DT)
 
 
 # Load the data
-access_score <- read.csv("/Users/gaoyuchen/Downloads/access_score.csv")
-avail_score <- read.csv("/Users/gaoyuchen/Downloads/avail_with_score.csv")
-planning_area_geojson <- st_read("/Users/gaoyuchen/Downloads/planning_area.geojson")
+access_score <- read.csv("access_score.csv")
+avail_score <- read.csv("avail_with_score.csv")
+planning_area_geojson <- st_read("planning_area.geojson")
 # Clean the geometries
 planning_area_geojson <- st_make_valid(planning_area_geojson)
 
@@ -24,7 +24,7 @@ ui <- fluidPage(
                  sliderInput("cbdWeight", "Weightage on CBD", min = 0, max = 1, value = 0, step = 0.1),
                  sliderInput("ionWeight", "Weightage on ION", min = 0, max = 1, value = 0, step = 0.1),
                  sliderInput("sghWeight", "Weightage on SGH", min = 0, max = 1, value = 0, step = 0.1),
-                
+                 
                  actionButton("seeAccessMap", "See the Map")
                ),
                mainPanel(
@@ -81,7 +81,7 @@ server <- function(input, output, session) {
       # Calculate the scores
       access_score$score <- with(access_score, input$cbdWeight * cbd_diff_score + input$ionWeight * ion_diff_score + input$sghWeight * sgh_diff_score)
       # Normalize the scores to range from 0 to 1
-      #access_score$normalized_score <- (access_score$score - min(access_score$score)) / (max(access_score$score) - min(access_score$score))
+      # access_score$normalized_score <- (access_score$score - min(access_score$score)) / (max(access_score$score) - min(access_score$score))
       
       # Merge the scores with the geojson data
       merged_data <- merge(planning_area_geojson, access_score, by = "planning_area")
@@ -105,13 +105,17 @@ server <- function(input, output, session) {
       
       # Render the accessibility table
       output$accessTable <- renderDT({
+        access_score$weighted_diff <- with(access_score, input$ionWeight * ion_diff + input$sghWeight * sgh_diff + input$cbdWeight * cbd_diff)
+        
         sorted_access_score <- access_score %>%
-          select(planning_area, cbd_diff, ion_diff, sgh_diff, score) %>%
+          select(planning_area, cbd_diff, ion_diff, sgh_diff, weighted_diff, score) %>%
           mutate(
-            score = round(score, 2)) %>%
+            score = round(score, 2),
+            weighted_diff = round(weighted_diff, 2)
+          ) %>%
           arrange(desc(score))
         caption <- tags$caption( style = "color: black;","Note: The '_Diff' columns represent the difference in travel duration when reaching the specific destination via public transportation compared to private transportation.")
-        colnames(sorted_access_score) <- c("Planning Area", "CBD_Diff (min)", "ION_Diff (min)", "SGH_Diff (min)", "Accessbility Score")
+        colnames(sorted_access_score) <- c("Planning Area", "CBD_Diff (min)", "ION_Diff (min)", "SGH_Diff (min)", "Weighted_Diff (min)", "Accessibility Score")
         datatable(sorted_access_score, options = list(pageLength = 10),caption = caption)
       }, server = FALSE)
     }
@@ -131,7 +135,7 @@ server <- function(input, output, session) {
       avail_score$score <- with(avail_score, input$trainWeight * num_trainstations_score + input$busstopWeight * num_busstops_score + input$busfreqWeight * avg_bus_freq_score + input$busserviceWeight * num_busservices_score)
       
       # Normalize the scores to range from 0 to 1
-      #avail_score$normalized_score <- (avail_score$score - min(avail_score$score)) / (max(avail_score$score) - min(avail_score$score))
+      # avail_score$normalized_score <- (avail_score$score - min(avail_score$score)) / (max(avail_score$score) - min(avail_score$score))
       
       # Merge the scores with the geojson data
       merged_data <- merge(planning_area_geojson, avail_score, by = "planning_area")
