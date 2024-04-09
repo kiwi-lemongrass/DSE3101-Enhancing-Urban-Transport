@@ -7,7 +7,7 @@
 - Tiffany Irene Prasetio
 
 ## 1. Project Description
-This project is a group project under course code DSE3101. Our aim is to identify and analyze commuter hubs and public transport accessibility in Singapore to support urban planning and development. By leveraging data from the LTA DataMall, we will assess the density and distribution of transport services in relation to population centers, providing valuable insights for city planners and developers. 
+This project is a group project under course code DSE3101. Our aim is to create an app which can help those who are going to rent or buy a house in Singapore. By leveraging data from the LTA DataMall, we will assess the density and distribution of transport services in relation to population centers, providing valuable insights for the public. 
 
 
 ## 2. Problem Statement
