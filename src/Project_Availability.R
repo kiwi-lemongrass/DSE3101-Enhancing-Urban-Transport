@@ -116,7 +116,7 @@ server <- function(input, output, session) {
           arrange(desc(score))
         caption <- tags$caption( style = "color: black;","Note: The '_Diff' columns represent the difference in travel duration when reaching the specific destination via public transportation compared to private transportation.")
         colnames(sorted_access_score) <- c("Planning Area", "CBD_Diff (min)", "ION_Diff (min)", "SGH_Diff (min)", "Weighted_Diff (min)", "Accessibility Score")
-        datatable(sorted_access_score, options = list(pageLength = 10),caption = caption)
+        datatable(sorted_access_score, options = list(pageLength = 5),caption = caption)
       }, server = FALSE)
     }
   })
@@ -165,7 +165,7 @@ server <- function(input, output, session) {
           mutate(score = round(score, 2)) %>%
           arrange(desc(score))
         colnames(sorted_avail_score) <- c("Planning Area", "Number of busstops ", "Number of train stations", "Number of Busservices","Average Bus Frequency" ,"Availability Score")
-        datatable(sorted_avail_score, options = list(pageLength = 10))
+        datatable(sorted_avail_score, options = list(pageLength = 5))
       }, server = FALSE)
     }
   })
