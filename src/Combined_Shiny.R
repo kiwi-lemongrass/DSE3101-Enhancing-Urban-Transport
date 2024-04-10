@@ -21,9 +21,9 @@ ui <- fluidPage(
              sidebarLayout(
                
                sidebarPanel(
-                 sliderInput("cbdWeight", "Weightage on CBD", min = 0, max = 1, value = 0, step = 0.1),
-                 sliderInput("ionWeight", "Weightage on ION", min = 0, max = 1, value = 0, step = 0.1),
-                 sliderInput("sghWeight", "Weightage on SGH", min = 0, max = 1, value = 0, step = 0.1),
+                 sliderInput("cbdWeight", "Weightage on CBD", min = 0, max = 1, value = 0, step = 0.05),
+                 sliderInput("ionWeight", "Weightage on ION", min = 0, max = 1, value = 0, step = 0.05),
+                 sliderInput("sghWeight", "Weightage on SGH", min = 0, max = 1, value = 0, step = 0.05),
                  
                  actionButton("seeAccessMap", "See the Map")
                ),
@@ -37,10 +37,10 @@ ui <- fluidPage(
              column(12, h4("Please ensure that the sum of weights is equal to 1.")),
              sidebarLayout(
                sidebarPanel(
-                 sliderInput('trainWeight', "Weightage on Number of Train Stations ", min = 0, max = 1, value = 0.25, step = 0.01),
-                 sliderInput('busstopWeight', "Weightage on Number of Bus Stops ", min = 0, max = 1, value = 0.25, step = 0.01),
-                 sliderInput('busserviceWeight', "Weightage on Number of Bus Services ", min = 0, max = 1, value = 0.25, step = 0.01),
-                 sliderInput('busfreqWeight', "Weightage on Average Bus Frequency ", min = 0, max = 1, value = 0.25, step = 0.01),
+                 sliderInput('trainWeight', "Weightage on Number of Train Stations ", min = 0, max = 1, value = 0.25, step = 0.05),
+                 sliderInput('busstopWeight', "Weightage on Number of Bus Stops ", min = 0, max = 1, value = 0.25, step = 0.05),
+                 sliderInput('busserviceWeight', "Weightage on Number of Bus Services ", min = 0, max = 1, value = 0.25, step = 0.05),
+                 sliderInput('busfreqWeight', "Weightage on Average Bus Frequency ", min = 0, max = 1, value = 0.25, step = 0.05),
                  actionButton("seeAvailMap", "See the Map")
                ),
                mainPanel(
