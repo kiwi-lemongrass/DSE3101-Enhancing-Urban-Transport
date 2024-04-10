@@ -39,8 +39,8 @@ ui <- fluidPage(
                sidebarPanel(
                  sliderInput('trainWeight', "Weightage on Number of Train Stations ", min = 0, max = 1, value = 0.25, step = 0.01),
                  sliderInput('busstopWeight', "Weightage on Number of Bus Stops ", min = 0, max = 1, value = 0.25, step = 0.01),
-                 sliderInput('busfreqWeight', "Weightage on Average Bus Frequency ", min = 0, max = 1, value = 0.25, step = 0.01),
                  sliderInput('busserviceWeight', "Weightage on Number of Bus Services ", min = 0, max = 1, value = 0.25, step = 0.01),
+                 sliderInput('busfreqWeight', "Weightage on Average Bus Frequency ", min = 0, max = 1, value = 0.25, step = 0.01),
                  actionButton("seeAvailMap", "See the Map")
                ),
                mainPanel(
