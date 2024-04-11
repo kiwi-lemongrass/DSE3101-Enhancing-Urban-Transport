@@ -161,7 +161,7 @@ server <- function(input, output, session) {
                  -avg_bus_freq_score, -total_score) %>%
           mutate(score = round(score, 2)) %>%
           arrange(desc(score))
-        colnames(sorted_avail_score) <- c("Planning Area", "Number of Bus Stops ", "Number of Train Stations", "Number of Bus Services","Average Bus Frequency" ,"Pop Age 0-20" ,"Pop Age 21-64", "Pop Age 65 and Above","Total_Population","Availability Score")
+        colnames(sorted_avail_score) <- c("Planning Area", "Number of Bus Stops ", "Number of Train Stations", "Number of Bus Services","Average Bus Frequency" ,"Pop Age 0-20" ,"Pop Age 21-64", "Pop Age 65 and Above","Total Population","Availability Score")
         datatable(sorted_avail_score, options = list(pageLength = 5))
       }, server = FALSE)
     }
