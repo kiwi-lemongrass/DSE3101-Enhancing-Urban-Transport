@@ -22,9 +22,9 @@ ui <- fluidPage(
              sidebarLayout(
                
                sidebarPanel(
-                 sliderInput("cbdWeight", "Weightage on CBD", min = 0, max = 1, value = 0, step = 0.1),
-                 sliderInput("ionWeight", "Weightage on ION", min = 0, max = 1, value = 0, step = 0.1),
-                 sliderInput("sghWeight", "Weightage on SGH", min = 0, max = 1, value = 0, step = 0.1),
+                 sliderInput("cbdWeight", "Weightage on CBD", min = 0, max = 1, value = 0.33, step = 0.01),
+                 sliderInput("ionWeight", "Weightage on ION", min = 0, max = 1, value = 0.33, step = 0.01),
+                 sliderInput("sghWeight", "Weightage on SGH", min = 0, max = 1, value = 0.34, step = 0.01),
                  
                  actionButton("seeAccessMap", "See the Map")
                ),
@@ -117,7 +117,7 @@ server <- function(input, output, session) {
           arrange(desc(score))
         caption <- tags$caption( style = "color: black;","Note: The '_Diff' columns represent the difference in travel duration when reaching the specific destination via public transportation compared to private transportation.")
         colnames(sorted_access_score) <- c("Planning Area", "CBD_Diff (min)", "ION_Diff (min)", "SGH_Diff (min)", "Weighted_Diff (min)", "Accessibility Score")
-        datatable(sorted_access_score, options = list(pageLength = 10),caption = caption)
+        datatable(sorted_access_score, options = list(pageLength = 5),caption = caption)
       }, server = FALSE)
     }
   })
@@ -164,8 +164,8 @@ server <- function(input, output, session) {
                  -avg_bus_freq_score, -total_score) %>%
           mutate(score = round(score, 2)) %>%
           arrange(desc(score))
-        colnames(sorted_avail_score) <- c("Planning Area", "Number of busstops ", "Number of train stations", "Number of Busservices","Average Bus Frequency" ,"Age 0-20" ,"Age 21-64", "Age 65 and Above","Total Population","Availability Score")
-        datatable(sorted_avail_score, options = list(pageLength = 10))
+        colnames(sorted_avail_score) <- c("Planning Area", "Number of Bus Stops ", "Number of Train Stations", "Number of Bus Services","Average Bus Frequency" ,"Pop Age 0-20" ,"Pop Age 21-64", "Pop Age 65 and Above","Total_Population","Availability Score")
+        datatable(sorted_avail_score, options = list(pageLength = 5))
       }, server = FALSE)
     }
   })
