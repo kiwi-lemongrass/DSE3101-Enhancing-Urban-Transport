@@ -146,7 +146,7 @@ server <- function(input, output, session) {
                       color = "black",
                       weight = 1,
                       label = ~paste(planning_area, ": ", round(score, 2),
-                                     "Total Population:", total_pop),
+                                     "; Total Population:", total_pop),
                       labelOptions = labelOptions(direction = "auto", permanent = FALSE)) %>%
           addLegend(pal = colorNumeric("RdYlGn", domain = merged_data_ava$score),
                     values = merged_data_ava$score,
