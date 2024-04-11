@@ -6,10 +6,10 @@ library(DT)
 
 
 # Load the data
-access_score <- read.csv("access_score.csv")
-avail_score <- read.csv("avail_with_score.csv")
-planning_area_geojson <- st_read("planning_area.geojson")
-pop_by_agegroup=read.csv("pop_by_agegroup.csv")
+access_score <- read.csv("../data/access_score.csv")
+avail_score <- read.csv("../data/avail_with_score.csv")
+planning_area_geojson <- st_read("../data/planning_area.geojson")
+pop_by_agegroup=read.csv("../data/pop_by_agegroup.csv")
 # Clean the geometries
 planning_area_geojson <- st_make_valid(planning_area_geojson)
 
