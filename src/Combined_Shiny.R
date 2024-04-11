@@ -112,8 +112,8 @@ server <- function(input, output, session) {
             weighted_diff = round(weighted_diff, 2)
           ) %>%
           arrange(desc(score))
-        caption <- tags$caption( style = "color: black;","Note: The '_Diff' columns represent the difference in travel duration when reaching the specific destination via public transportation compared to private transportation.")
-        colnames(sorted_access_score) <- c("Planning Area", "CBD_Diff (min)", "ION_Diff (min)", "SGH_Diff (min)", "Weighted_Diff (min)", "Accessibility Score")
+        caption <- tags$caption( style = "color: black;","Note: The term 'Diff' represent the difference in travel duration when reaching the specific destination via public transportation compared to private transportation, ie. Time Difference = Time taken by Public Transport - Time taken by Private Transport.")
+        colnames(sorted_access_score) <- c("Planning Area", "CBD Diff (min)", "ION Diff (min)", "SGH Diff (min)", "Weighted Diff (min)", "Accessibility Score")
         datatable(sorted_access_score, options = list(pageLength = 5),caption = caption)
       }, server = FALSE)
     }
