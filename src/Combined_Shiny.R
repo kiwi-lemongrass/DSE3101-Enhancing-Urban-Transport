@@ -9,6 +9,7 @@ library(DT)
 access_score <- read.csv("access_score.csv")
 avail_score <- read.csv("avail_with_score.csv")
 planning_area_geojson <- st_read("planning_area.geojson")
+pop_by_agegroup=read.csv("pop_by_agegroup.csv")
 # Clean the geometries
 planning_area_geojson <- st_make_valid(planning_area_geojson)
 
@@ -17,14 +18,13 @@ ui <- fluidPage(
   titlePanel("Accessibility and Availability Analysis"),
   tabsetPanel(
     tabPanel("Accessibility",
-             column(12, h4("Please ensure that the sum of weights is equal to 1.")),
+             column(12, h4("Please ensure that the sum of weights is equal to 1.",style = "color: red;")),
              sidebarLayout(
                
                sidebarPanel(
-                 sliderInput("cbdWeight", "Weightage on CBD", min = 0, max = 1, value = 0, step = 0.05),
-                 sliderInput("ionWeight", "Weightage on ION", min = 0, max = 1, value = 0, step = 0.05),
-                 sliderInput("sghWeight", "Weightage on SGH", min = 0, max = 1, value = 0, step = 0.05),
-                 
+                 sliderInput("cbdWeight", "Weightage on CBD", min = 0, max = 1, value = 0.30, step = 0.01),
+                 sliderInput("ionWeight", "Weightage on ION", min = 0, max = 1, value = 0.30, step = 0.01),
+                 sliderInput("sghWeight", "Weightage on SGH", min = 0, max = 1, value = 0.40, step = 0.01),
                  actionButton("seeAccessMap", "See the Map")
                ),
                mainPanel(
@@ -34,13 +34,13 @@ ui <- fluidPage(
              )
     ),
     tabPanel("Availability",
-             column(12, h4("Please ensure that the sum of weights is equal to 1.")),
+             column(12, h4("Please ensure that the sum of weights is equal to 1.",style = "color: red;")),
              sidebarLayout(
                sidebarPanel(
-                 sliderInput('trainWeight', "Weightage on Number of Train Stations ", min = 0, max = 1, value = 0.25, step = 0.05),
-                 sliderInput('busstopWeight', "Weightage on Number of Bus Stops ", min = 0, max = 1, value = 0.25, step = 0.05),
-                 sliderInput('busserviceWeight', "Weightage on Number of Bus Services ", min = 0, max = 1, value = 0.25, step = 0.05),
-                 sliderInput('busfreqWeight', "Weightage on Average Bus Frequency ", min = 0, max = 1, value = 0.25, step = 0.05),
+                 sliderInput('trainWeight', "Weightage on Number of Train Stations ", min = 0, max = 1, value = 0.25, step = 0.01),
+                 sliderInput('busstopWeight', "Weightage on Number of Bus Stops ", min = 0, max = 1, value = 0.25, step = 0.01),
+                 sliderInput('busserviceWeight', "Weightage on Number of Bus Services ", min = 0, max = 1, value = 0.25, step = 0.01),
+                 sliderInput('busfreqWeight', "Weightage on Average Bus Frequency ", min = 0, max = 1, value = 0.25, step = 0.01),
                  actionButton("seeAvailMap", "See the Map")
                ),
                mainPanel(
@@ -56,8 +56,8 @@ ui <- fluidPage(
 # Define server logic
 server <- function(input, output, session) {
   observe({
-    total_weight <- input$trainWeight + input$busstopWeight + input$busfreqWeight
-    updateSliderInput(session, "busserviceWeight", value = 1 - total_weight)
+    total_weight <- input$trainWeight + input$busstopWeight + input$busserviceWeight
+    updateSliderInput(session, "busfreqWeight", value = 1 - total_weight)
   })
   observeEvent(input$cbdWeight, {
     updateSliderInput(session, "sghWeight", value = 1 - input$cbdWeight - input$ionWeight)
@@ -80,8 +80,6 @@ server <- function(input, output, session) {
     } else {
       # Calculate the scores
       access_score$score <- with(access_score, input$cbdWeight * cbd_diff_score + input$ionWeight * ion_diff_score + input$sghWeight * sgh_diff_score)
-      # Normalize the scores to range from 0 to 1
-      # access_score$normalized_score <- (access_score$score - min(access_score$score)) / (max(access_score$score) - min(access_score$score))
       
       # Merge the scores with the geojson data
       merged_data <- merge(planning_area_geojson, access_score, by = "planning_area")
@@ -124,6 +122,7 @@ server <- function(input, output, session) {
   observeEvent(input$seeAvailMap, {
     total_weight <- input$trainWeight + input$busstopWeight + input$busfreqWeight + input$busserviceWeight
     
+    
     if (total_weight != 1) {
       showNotification(
         paste("Total weightage must sum up to 1. Current total is ", total_weight),
@@ -132,39 +131,37 @@ server <- function(input, output, session) {
       )
     } else {
       # Calculate the scores
-      avail_score$score <- with(avail_score, input$trainWeight * num_trainstations_score + input$busstopWeight * num_busstops_score + input$busfreqWeight * avg_bus_freq_score + input$busserviceWeight * num_busservices_score)
+      avail_score_with_pop <- merge(avail_score, pop_by_agegroup, by.x = "planning_area", by.y = "PA")
+      avail_score_with_pop$score <- with(avail_score_with_pop, input$trainWeight * num_trainstations_score + input$busstopWeight * num_busstops_score + input$busfreqWeight * avg_bus_freq_score + input$busserviceWeight * num_busservices_score)
       
-      # Normalize the scores to range from 0 to 1
-      # avail_score$normalized_score <- (avail_score$score - min(avail_score$score)) / (max(avail_score$score) - min(avail_score$score))
-      
-      # Merge the scores with the geojson data
-      merged_data <- merge(planning_area_geojson, avail_score, by = "planning_area")
+      merged_data_ava <- merge(planning_area_geojson,avail_score_with_pop, by = "planning_area")
       
       # Render the map with Leaflet
       output$availMap <- renderLeaflet({
         leaflet() %>%
           addProviderTiles("CartoDB.Positron") %>%
-          addPolygons(data = merged_data,
-                      fillColor = ~colorNumeric("RdYlGn", domain = merged_data$score)(score),
+          addPolygons(data = merged_data_ava,
+                      fillColor = ~colorNumeric("RdYlGn", domain = merged_data_ava$score)(score),
                       fillOpacity = 0.7,
                       color = "black",
                       weight = 1,
-                      label = ~paste(planning_area, ": ", round(score, 2)),
+                      label = ~paste(planning_area, ": ", round(score, 2),
+                                     "Total Population:", total_pop),
                       labelOptions = labelOptions(direction = "auto", permanent = FALSE)) %>%
-          addLegend(pal = colorNumeric("RdYlGn", domain = merged_data$score),
-                    values = merged_data$score,
+          addLegend(pal = colorNumeric("RdYlGn", domain = merged_data_ava$score),
+                    values = merged_data_ava$score,
                     title = "Availability Score",
                     position = "bottomright")
       })
       
       # Render the availability table with normalized scores
       output$availTable <- renderDT({
-        sorted_avail_score <- avail_score %>%
+        sorted_avail_score <-avail_score_with_pop %>%
           select(-num_busstops_score, -num_trainstations_score, -num_busservices_score,
                  -avg_bus_freq_score, -total_score) %>%
           mutate(score = round(score, 2)) %>%
           arrange(desc(score))
-        colnames(sorted_avail_score) <- c("Planning Area", "Number of busstops ", "Number of train stations", "Number of Busservices","Average Bus Frequency" ,"Availability Score")
+        colnames(sorted_avail_score) <- c("Planning Area", "Number of Bus Stops ", "Number of Train Stations", "Number of Bus Services","Average Bus Frequency" ,"Pop Age 0-20" ,"Pop Age 21-64", "Pop Age 65 and Above","Total_Population","Availability Score")
         datatable(sorted_avail_score, options = list(pageLength = 5))
       }, server = FALSE)
     }
