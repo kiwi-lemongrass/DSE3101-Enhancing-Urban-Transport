@@ -1,0 +1,169 @@
+---
+title: "Technical Documentation Frontend"
+author: "Frontend"
+date: "2024-04-14"
+output:
+  html_document:
+    css: styles.css
+fontsize: 11pt
+spacing: single
+---
+This document provides a comprehensive guide to the Shiny application interface designed for analyzing connectivity in 55 regions of Singapore.
+
+## What does this app do? 
+The app is intended to help people who rely heavily on public transport and intend to buy or rent a new house. For this group of people, transportation is one of their key considerations when buying or renting a house. They would like to have some easy and comprehensive way to know about connectivity in different areas in Singapore. Our app offers them the ease and convenience to find the information that they are interested in right at their fingertips.\ 
+
+Comparing with looking through tons of data online, we believe the more intuitive way for users to understand the connectivity in each area is through our interactive and comprehensive visualization. Our backend team used the most updated and reliable sources for transportation from the OneMap API and location data to provide users with the most accurate information. To assess connectivity, we utilized two metrics: accessibility and availability. 
+
+## Application Overview
+In our design, simplicity and ease of use are key priorities. Our frontend interface was primarily built using the Shiny app in R.
+
+![Alternative Text](/Users/gaoyuchen/Desktop/Interface.jpeg "Overall View of the Interface")
+
+Above is an overall view of the interface. To prevent users from feeling overwhelmed by the abundance of information, we've organized the interface to display only the most essential details. As you can see, there are three main sections in the interface: (1) the input slider section, (2) the map section, and (3) the table view section for both the (a) accessibility and (b) availability tabs. We will explain each of them in detail in the next section.
+
+
+## Package Used and Their Functions
+```{r,echo = FALSE}
+package_functions <- data.frame(
+  package_name = c("shiny", "leaflet", "sf", "dplyr", "DT"),
+  functions = c("Build interactive web applications", 
+               "Create interactive maps", 
+               "Manipulate spatial data", 
+               "Data manipulation and transformation", 
+               "Create interactive tables")
+)
+
+# Print the table using knitr::kable
+knitr::kable(package_functions, 
+             col.names = c("Package Name", "Function"), 
+             align = c("l", "l"))
+```
+## Import Data
+The data we used are the data being engineered and cleansed by the back-end team and are ready for front-end to use. Below is the overview of the datasets we used and their functions. All these files are under the src directory of our repo.
+```{r,echo=FALSE}
+# Create a data frame with dataset names and their respective functions
+dataset_functions <- data.frame(
+  dataset_name = c("access_score.csv", 
+                   "avail_with_score.csv", 
+                   "planning_area.geojson", 
+                   "pop_by_agegroup.csv"),
+  Function = c("Generate accessibility score", 
+               "Generate availability score", 
+               "Plotting the spatial map with 55 planning regions being labelled", 
+               "Value-added feature of demographic distribution in different areas")
+)
+
+# Print the table using knitr::kable
+knitr::kable(dataset_functions, 
+             col.names = c("Dataset Name", "Function"), 
+             align = c("l", "l"))
+
+```
+
+## Functions and Relevant Features Involved in the Front-end
+We used two dimensions to interpret the concept of connectivity, namely availability and connectivity. 
+
+The **availability** of a region refers to the fundamental public transportation infrastructure available to residents in that area. For this aspect, we mainly consider four different factors:
+
+1. Number of train stations in the region
+2. Number of bus stops in the region
+3. Number of bus routes in the region
+4. Average frequency of buses (in minutes) in each region (Frequency of Dispatch for Bus Services in the region)
+
+The **connectivity** of a region refers to how accessible the destinations are using public transports from the area that people are living in. We quantify this metric by assessing the differences in travel time (in minutes) between utilizing public and private transport to three representative places: CBD (Business)
+ION Orchard (Leisure) and SGH (Healthcare). They are selected based on the online resources stating that they are the most popular locations under each category.
+
+Our UI and server logic are quite similar and consistent for availability and accessibility. Here, we would like to use availability to illustrate how each part works.\
+\
+
+### 1. Slider Section
+We understand that users may have different priorities for various metrics. Thus, we incorporate a customization function via the slider section.  Now, we will explain main features of the slider section and explain how to realize them using code.Below is a screenshot with label of the slider section in our interface.
+
+<img src="/Users/gaoyuchen/Desktop/Slider.jpeg" alt="Alternative Text" width="400" height="500" title="Slider Input Widget with Features being Labelled" />
+<div style="text-align:left">Slider Input Widget with Features being Labelled</div>
+\
+Users can adjust the weights assigned to different factors from 0 to 1(5) with a precision of 0.01(3) based on their needs. For instance, a user who often takes the MRT to their workplace can give a larger weight to the number of train stations in the area. The default value of the weights is 0.25 across all sliders (2), which will be convenient for the users if they want to treat all the factors equally. 
+
+We achieved this using under the sidebarPanel of UI. We created three *sliderInput()* functions for accessibility (three factors to compute the score) and four sliderInput functions for availability (four factors to compute the score).Inside each sliderInput function, we set the relevant variable, label, min and max value and default value as well as the precision using step argument. Below is an example code to do this:\
+```{r,eval = FALSE}
+sidebarPanel(sliderInput('trainWeight', "Weightage on Number of Train Stations ", min = 0, max = 1, value = 0.25, step = 0.01)
+```
+
+Once the user key in all the weights, they can click on the see the map button which will generate the map and table for them(4). We employed actionButton function under UI to do it.
+
+Below is the code to calculating the score for availability. This code calculates the score based on weighted factors in the *"avail_score_with_pop"* dataset using values from sliders in a Shiny application. Each factor is multiplied by a corresponding weight to get the weighted sum.\ 
+```{r setup, eval = FALSE}
+avail_score_with_pop$score <- with(avail_score_with_pop, input$trainWeight * num_trainstations_score + input$busstopWeight * num_busstops_score + input$busfreqWeight * avg_bus_freq_score + input$busserviceWeight * num_busservices_score)
+```
+
+One essential condition is that the sum of the weights must be equal to 1 for consistency of comparison(1). To inform our users of this, we add a red line reminder above the slider stating, *"Please ensure that the sum of weights is equal to 1."* We realize this by adding column function under each *tabpanel* under the UI session. We set the first argument of the column function to be 12 to specify the width of the column. The number 12 indicates that the content should span the entire width of the tab panel. Then, we set the second argument to be h4 to create level 4 heading with the text we want to display. In order to make the reminder more obvious, we set the color of the text to be red by doing *"style = "color: red;"*.
+
+If the total weight is incorrect(not 1), a pop-up will alert the users to remind them. We employed *showNotification* function here to achieve this.The duration of the notification is set to 5 seconds, and the type of notification is set to "error" to visually distinguish it as an error message.
+```{r,eval = FALSE}
+if (total_weight != 1) {
+      showNotification(paste("Total weightage must sum up to 1. Current total is ", total_weight),duration = 5,
+        type = "error")
+```
+To reduce the amount of math that users need to do, we design our slider such that the last slider will adjust its value based on the previous values inputted by our users. This was done via observe function under server section as shown below. The *updateSliderInput()* function to update the value of the slider input. The new value is set to the difference between 1 (the target sum of weights) and the current *"total_weight".*
+```{r,eval = FALSE}
+observe({
+    total_weight <- input$trainWeight + input$busstopWeight + input$busfreqWeight
+    updateSliderInput(session, "busserviceWeight", value = 1 - total_weight)
+  })
+```
+\
+
+### 2. Interactive Heat Map
+After being assigned weights of each factor by users, we will be able to generate the availability score. However, comparing a list of scores for different regions is not easy and engaging. We decided to build a heat map which can vividly reflects the availability and accessibility in different areas.
+```{r,eval = FALSE}
+ output$availMap <- renderLeaflet({
+        leaflet() %>%
+          addProviderTiles("CartoDB.Positron") %>%
+          addPolygons(data = merged_data_ava,
+                      fillColor = ~colorNumeric("RdYlGn", domain = merged_data_ava$score)(score),
+                      fillOpacity = 0.7,
+                      color = "black",
+                      weight = 1,
+                      label = ~paste(planning_area, ": ", round(score, 2),
+                                     "Total Population:", total_pop),
+                      labelOptions = labelOptions(direction = "auto", permanent = FALSE)) %>%
+          addLegend(pal = colorNumeric("RdYlGn", domain = merged_data_ava$score),
+                    values = merged_data_ava$score,
+                    title = "Availability Score",
+                    position = "bottomright")
+      })
+``` 
+We utilized the *leaflet()* function in R along with *GeoJSON data* (from the src folder) to create interactive Leaflet maps. The *"CartoDB.Positron"* tile layer is added as the base map using *addProviderTiles()*.Polygons representing geographical areas are added to the map using *addPolygons()*, with fillColor determined by a color scale based on the "score" variable from *"merged_data_ava"*. 
+
+We chose a color gradient from green to red for the heat maps, where green signifies high scores and red signifies lower scores. Labels are added to each polygon showing the planning area name, score, and total population. When the user hovers the mouse over any specific region, they will instantly see the region's name, availability score, and the number of residents living in this area.
+```{r,eval = FALSE}
+avail_score_with_pop <- merge(avail_score, pop_by_agegroup, by.x = "planning_area", by.y = "PA")
+```
+We incorporated the population of each region by merging the *"avail_with_score.csv"* with the *"pop_by_agegroup.csv"* (from the src folder) by matching values in the *"planning_area"* column of *"avail_score"* with values in the *"PA"* column of *"pop_by_agegroup"*. Population in each region is an important consideration when determining the availability of public transport in different areas. It is possible for a region to have a small number of transportation infrastructure while also having a small population. In such cases, even if the availability score is low, it may not pose a significant issue, as fewer people will use public transport.\
+\
+
+### 3. Table View
+
+<img src="/Users/gaoyuchen/Desktop/table.jpeg" alt="Alternative Text" title="Interactive Table with features Being Labelled" />
+<div style="text-align:left">Interactive Table with features Being Labelled</div>
+\
+Beyond the heat maps, we employed the *renderDT* function udner the DT package to create interactive data table with detailed numerical data for each region. This feature empowers our users to explore specifics and compare different areas easily. Regions are neatly listed in the table, sorted by score in descending order(1). We used *arrange(desc(score))* to realize this.
+
+While providing a score for different regions is an easy way to access its connectivity, some users might want the exact data for each factor to get the score. That's why our tables offer exact data for each factor contributing to the score. We selected the most relevant factors as shown below by using *select()* function under dplyr package. We manipulated the data before it is displayed under the server section.For instance, we mutated the score column to only keep 2 decimal places. We also used *colnames()* function to change the column name to make them more intuitive for our users.
+```{r,eval = FALSE}
+colnames(sorted_avail_score) <- c("Planning Area", "Number of Bus Stops ", "Number of Train Stations", "Number of Bus Services","Average Bus Frequency" ,"Pop Age 0-20" ,"Pop Age 21-64", "Pop Age 65 and Above","Total_Population","Availability Score")
+```
+Besides the factors mentioned above, we also include the population at different age groups in the availability table(2).We understand that demographic distribution is also one crucial aspects that people always take into account when they rent or buy a house. Incorporating this useful information will definitely be helpful for them.
+
+```{r,eval = FALSE}
+datatable(sorted_avail_score, options = list(pageLength = 5)
+```
+The code above set the default rows being displayed per page in the table to be 5. Our users can also adjust the number of rows being displayed per page based on their own preference(3).
+
+Moreover, the search function at the top right hand corner of the table will allow our users to search and get the information of the community they are interested(4). This helps to avoid the hassle of manually finding the information throughout the entire table. Our users can also sort the data by a specific column by simply clicking on the column header which is one excellent function of DT table(5).
+
+All these features make the data table interactive and convenient for our users. Last but not least, we use *shinyApp(ui = ui, server = server)* to run the code.\
+\
+
+
