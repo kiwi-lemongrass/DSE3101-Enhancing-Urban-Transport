@@ -7602,7 +7602,8 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># merge both availability and accessibility scores</span>
-<span class="n">total_score</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">avail_with_score</span><span class="p">,</span> <span class="n">access_with_score</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'planning_area'</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s1">'_avail'</span><span class="p">,</span> <span class="s1">'_access'</span><span class="p">))</span>
+<span class="n">total_score</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">avail_with_score</span><span class="p">,</span> <span class="n">access_with_score</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'planning_area'</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">,</span> \
+                       <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s1">'_avail'</span><span class="p">,</span> <span class="s1">'_access'</span><span class="p">))</span>
 <span class="n">total_score</span><span class="p">[</span><span class="s1">'total_score'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">total_score</span><span class="p">[</span><span class="s1">'total_score_avail'</span><span class="p">]</span> <span class="o">+</span> <span class="n">total_score</span><span class="p">[</span><span class="s1">'total_score_access'</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
 <span class="n">total_score</span> <span class="o">=</span> <span class="n">total_score</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">'total_score'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
@@ -7737,7 +7738,8 @@ Connectivity scores can also be constructed and analysed on a subzone level inst
 <span class="k">for</span> <span class="n">month</span> <span class="ow">in</span> <span class="n">last_3_months</span><span class="p">:</span>
     <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Date'</span><span class="p">:</span> <span class="n">month</span><span class="p">}</span>
     <span class="c1"># Request data from the server</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">resource_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"AccountKey"</span><span class="p">:</span> <span class="s2">"LTA_KEY"</span><span class="p">,</span> <span class="s2">"accept"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">},</span> <span class="n">params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">resource_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"AccountKey"</span><span class="p">:</span> <span class="s2">"LTA_KEY"</span><span class="p">,</span> <span class="s2">"accept"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">},</span> \
+                       <span class="n">params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
     <span class="n">res_list</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">res_list</span><span class="p">[</span><span class="s1">'value'</span><span class="p">])</span>
 </pre></div>
@@ -7998,7 +8000,8 @@ Note that you may need to swap the order in the <code>transform()</code> line in
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>$$
-\text{availability score} = w_1 \times \text{num busstops score} + w_2 \times \text{num trainstations score} + w_3 \times \text{num busservices score} + w_4 \times \text{avg bus freq score}
+\text{availability score} = w_1 \times \text{num busstops score} + w_2 \times \text{num trainstations score} + \\
+w_3 \times \text{num busservices score} + w_4 \times \text{avg bus freq score}
 $$
 $$ \text{where } w_i \text{ are weights to be assigned by the user in the interface and } {\sum_{i=1}^{4} w_i} = 1
 $$</p>
@@ -8039,7 +8042,7 @@ $$</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>We use a weighted average of all the metrics in each category, where the coefficients can be customised by the commuters so long as they add up to 1. In this way, the final scores are dynamic and more representative of the user’s personal preferences.</p>
-<p>For example, a user who only cares about going to the CBD may assign a weight of 1 to <code>cbd_diff_score</code> and 0 for the rest when looking at accessibility.</p>
+<p>For example, a user who only cares about going to the CBD may assign a weight of 1 to <code>cbd diff score</code> and 0 for the rest when looking at accessibility.</p>
 </div>
 </div>
 </div>
@@ -8155,7 +8158,7 @@ Next, we further cleaned the data of the frequency columns before calculating th
 <span class="n">min_max_scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
 
 <span class="c1"># Apply Min-Max scaling to normalize values to positive numbers only</span>
-<span class="n">avail_values</span> <span class="o">=</span> <span class="n">availability</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">'planning_area'</span><span class="p">)</span>  <span class="c1"># Make a copy to avoid modifying the original DataFrame</span>
+<span class="n">avail_values</span> <span class="o">=</span> <span class="n">availability</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s1">'planning_area'</span><span class="p">)</span>
 
 <span class="c1"># Reverse direction of Freq columns</span>
 <span class="n">avail_values</span><span class="p">[</span><span class="s1">'avg_bus_freq'</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span> <span class="n">avail_values</span><span class="p">[</span><span class="s1">'avg_bus_freq'</span><span class="p">]</span>
