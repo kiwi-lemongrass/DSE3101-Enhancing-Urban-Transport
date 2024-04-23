@@ -6,39 +6,18 @@
 - Luo Xinming
 - Tiffany Irene Prasetio
 
-## 1. Project Description
-This project is a group project under course code DSE3101. Our aim is to create an app which displays the transporation infrastructure in Singapore to help those who are going to rent or buy a house in Singapore. By leveraging data from the LTA DataMall, we will assess the density and distribution of transport services in relation to population centers, providing valuable insights for the general public. 
+## 1. Problem Statement
+Only 1/3 of Singaporean households own a car (Straits Times, 2023). For the rest, public transport is a paramount mode of commute in their daily lfie. For the prospective home buyers among these public transport commuters, the connectivity between a residential area and important activity hubs in Singapore is an important factor to consider. However, few studies have come up with a connectivity score that is numerically easy to understand and compare. This project will attempt to fill in this gap and address the need of home buyers using a data-driven approach to identify areas that are well-connected in Singapore's public transport network.
 
-
-## 2. Problem Statement
-Urban planning and development in Singapore face challenges in optimizing public transport infrastructure to meet the needs of a growing population. This project will address the need for a data-driven approach to identify areas with high potential for development and to ensure that new developments are well-connected to the public transport network.
-A city planner could use the data to identify areas with insufficient public transportation services which are measured  by connectivity matrix and plan new routes or improve existing ones. They can also estimate the projected economic benefits from cost savings for passengers, reduced congestion costs, and increased productivity to assess the investment viability. 
-Real estate developers might analyze the data to determine potential locations for residential and commercial projects that would benefit from the proximity to transportation hubs.
+## 2. Project Description
+This project aims to create an app which displays connectivity of 55 residential areas in Singapore by public transport for those who are going to rent or buy a house in Singapore. By leveraging data from the LTA DataMall, OneMap and Google Map Platform, we will construct indicators of the accessibility and availability of the public transport to provide multifaceted insights for the app users. 
  
 ## 3. Data Source
-Our datasets will mainly come from LTA DataMall, which can be accessed via https://datamall.lta.gov.sg/content/datamall/en.html. The Land Transport Authority (LTA) spearheads land transport developments in Singapore, and we tap into their online data archive to obtain data on public transport from January 2022 to December 2023. 
+Our datasets come from:
+- [LTA DataMall](https://datamall.lta.gov.sg/content/datamall/en.html). The Land Transport Authority (LTA) spearheads land transport developments in Singapore, and we tap into their online data archive to obtain data on public transport from January 2022 to December 2023. 
+- [OneMap API](https://www.onemap.gov.sg/api). The website provides geolocational data of Singapore's planning area.
+- [Google Maps Platform](https://maps.googleapis.com/maps/api). The platform provides real time and predicted future travel time data. 
 
-## 4. Main Objectives
-1.Analyze public transport availability and accessibility across different regions in Singapore and look for gaps in services provided currently with the aid of interactive visualization \
-2.Identify factors that have significant weightage to improving connectivity eg. network density, service frequency, intermodal connectivity, travel time, reliability, etc \
-3.Identify commuter hubs and areas with high development potential based on transport connectivity.\
-4.Provide recommendations for urban planning and development based on public transport accessibility.\
-5.Propose new routes or modifications to existing routes to improve coverage and reduce congestion.
-
-
-## 5. Definition of Success
-We will gauge the success of the project by checking whether each of the following points is completed. 
-Completion of a comprehensive analysis of public transport availability and accessibility (buses and trains).
-Construction of a viable index to reflect the connectivity between regions based on its transport links (e.g. the number of direct bus routes, frequency of buses per hour).
-Identification of key commuter hubs and areas with high development potential.
-Construction of an interactive map to visualize the connectivity index of different regions and congestion levels of main transport routes in Singapore across time of the day.
-Development of actionable recommendations for urban planning and development.
-
-
-## 6. Project Timeline
-- Milestone 1 (Week 8-9): Data collection and preprocessing: Gather and clean data from LTA DataMall and other relevant sources. Logistics related to project planning. Complete the main part of backend analysis. 
-- Milestone 2 (Week 10-11): Analysis and visualization: Analyze public transport data and create interactive visualizations to identify commuter hubs and areas with high development potential. Finalize the videos and submit them on Canvas. Prepare for the in-class presentation. Complete the main part of frontend analysis. 
-- Milestone 3 (Week 12-13): In-class presentation. Review and complete the final report. 
 
 ## Links
 [Proposal](https://docs.google.com/document/d/1Rkk9R01Y3jouLnso1FWMFEfWWeDm70d52EWLyjCjkN0/edit)  
