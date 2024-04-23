@@ -1,4 +1,4 @@
-# Enhancing Urban Planning and Development through Public Transport Accessibility Analysis
+# Analysing Connectivity of Public Transport in Singapore
 
 **Team Members**
 - Bernice Ong Hwee Yee
