@@ -23,4 +23,4 @@ Our datasets come from:
 [Proposal](https://docs.google.com/document/d/1Rkk9R01Y3jouLnso1FWMFEfWWeDm70d52EWLyjCjkN0/edit)  
 [Project Journal](https://docs.google.com/document/d/1KGUR0AjU_-qRQ1V9_KZUK9jvvysmgQItazL7bBX8p4k/edit)  
 [Presentation Slides](https://docs.google.com/presentation/d/1V7o_LOmEEwV4NmvkGBOUjGETUEeECNjTOqy2Nqnfvh8/edit#slide=id.g2c95d7e93f3_0_3645)
-[Technical documentation](https://docs.google.com/document/d/1vRwLeyjzLc0fSJF9XyHB60AeQNe6JumKP4POr5UFG3w/edit)
+
